@@ -15,6 +15,12 @@
 - `./gradlew test` — run unit tests (none present yet).
 - Dev setup: JDK 21, open as a Gradle project in IntelliJ.
 
+## Release Process
+- **Automatic releases**: Push to `main` creates GitHub release with auto-generated tag from `build.gradle` version.
+- **Manual releases**: Push tag like `v1.0.0` to trigger release workflow.
+- **CI/CD**: GitHub Actions workflow builds shadow JAR and publishes to GitHub Releases.
+- **Versioning**: Update `version` in `build.gradle` before pushing to main for automatic releases.
+
 ## Coding Style & Naming Conventions
 - Java 21, UTF‑8, 4‑space indentation; keep lines readable (~120 chars).
 - Packages lowercase; classes `PascalCase`; methods/fields `camelCase`; constants `UPPER_SNAKE_CASE`.
