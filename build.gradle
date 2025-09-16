@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.1.0'
+}
+
+group = 'burp.zota'
+version = '0.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral() // Montoya is on Maven Central
+}
+
+dependencies {
+    // Provided by Burp at runtime; do NOT bundle
+    compileOnly 'net.portswigger.burp.extensions:montoya-api:2025.8'
+
+    // Jackson – keep versions aligned via BOM
+    implementation(platform("com.fasterxml.jackson:jackson-bom:2.20.0"))
+    implementation("com.fasterxml.jackson.core:jackson-core")
+    implementation("com.fasterxml.jackson.core:jackson-annotations")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(21)
+}
+
+// Only ship the shaded jar; disable the plain jar to avoid duplicate artifacts
+tasks.jar { enabled = false }
+
+tasks.shadowJar {
+    archiveClassifier = ''
+    manifest {
+        attributes(
+                'Implementation-Title': 'Zota Signer for Burp',
+                'Implementation-Version': project.version,
+                'Automatic-Module-Name': 'burp.zota.signer'
+        )
+    }
+    dependencies { exclude(dependency('net.portswigger.burp.extensions:montoya-api')) }
+    mergeServiceFiles()
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+// Reproducible archives and ensure `build` produces the shaded jar
+tasks.withType(AbstractArchiveTask).configureEach {
+    reproducibleFileOrder = true
+    preserveFileTimestamps = false
+}
+
+tasks.build { dependsOn tasks.shadowJar }

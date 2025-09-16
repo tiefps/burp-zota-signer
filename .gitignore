@@ -1,0 +1,24 @@
+# Build outputs
+build/
+*.jar
+*.class
+
+# Gradle
+.gradle/
+gradle-app.setting
+
+# IDE files
+.idea/
+*.iml
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
