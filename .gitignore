@@ -1,6 +1,7 @@
 # Build outputs
 build/
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.class
 
 # Gradle
