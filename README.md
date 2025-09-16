@@ -22,6 +22,17 @@ Open in IntelliJ (Gradle project) or run:
 
 The shaded jar is written to `build/libs/`. Load it in **Extender → Extensions → Add**.
 
+### Releases
+
+Releases are automatically published via GitHub Actions:
+
+- **Automatic releases**: When changes are pushed to the `main` branch, a release is automatically created with a tag matching the version in `build.gradle` (e.g., `v0.1.0`)
+- **Manual releases**: Push a tag following the pattern `v*` (e.g., `git tag v1.0.0 && git push origin v1.0.0`) to trigger a release
+- **Release assets**: Each release includes the built shadow JAR as a downloadable asset
+- **Duplicate prevention**: If a tag already exists for the current version, no duplicate release is created
+
+Download the latest release JAR from the [GitHub Releases page](https://github.com/tiefps/burp-zota-signer/releases).
+
 ## Security Note
 
 Credentials and settings are stored in the active Burp project using Montoya project-scoped persistence. No local files are written.
