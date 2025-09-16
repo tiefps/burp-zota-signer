@@ -169,11 +169,10 @@ public class ZotaSigner {
         return new Result(stripped, result.annotations());
     }
 
-    @FunctionalInterface
-    @FunctionalInterface
     /**
      * Functional contract for endpoint-specific signing implementations.
      */
+    @FunctionalInterface
     private interface SignFunction {
         Result apply(HttpRequest req, ZotaProfile profileOverride, boolean refreshDynamicValues) throws Exception;
     }
