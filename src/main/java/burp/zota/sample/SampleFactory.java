@@ -41,6 +41,7 @@ public class SampleFactory {
         long now = System.currentTimeMillis();
         String body = """
                 {
+                  "merchantID": "%s",
                   "merchantOrderID": "example-%d",
                   "merchantOrderDesc": "Test order",
                   "orderAmount": "500.00",
@@ -54,11 +55,18 @@ public class SampleFactory {
                   "customerZipCode": "10000",
                   "customerPhone": "+66-77111111",
                   "customerIP": "1.2.3.4",
-                  "redirectUrl": "https://merchant.example/return",
+                  "redirectUrl": "%s",
                   "callbackUrl": "%s",
-                  "checkoutUrl": "https://merchant.example/account/deposit/?uid=abc"
+                  "checkoutUrl": "%s"
                 }
-                """.formatted(now, collaboratorEmail("customer"), collaboratorUrl("/deposit-callback"));
+                """.formatted(
+                        firstNonEmpty(p.getMerchantId(), "EXAMPLE-MERCHANT-ID"),
+                        now,
+                        collaboratorEmail("customer"),
+                        collaboratorUrl("/deposit-return"),
+                        collaboratorUrl("/deposit-callback"),
+                        collaboratorUrl("/deposit-checkout")
+                );
         String req = "POST " + path + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "Content-Type: application/json\r\n" +
@@ -78,6 +86,7 @@ public class SampleFactory {
         long now = System.currentTimeMillis();
         String body = """
                 {
+                  "merchantID": "%s",
                   "merchantOrderID": "example-%d",
                   "merchantOrderDesc": "Test payout",
                   "orderAmount": "100.00",
@@ -90,7 +99,12 @@ public class SampleFactory {
                   "callbackUrl": "%s",
                   "customerBankAccountNumber": "100200"
                 }
-                """.formatted(now, collaboratorEmail("customer"), collaboratorUrl("/payout-callback"));
+                """.formatted(
+                        firstNonEmpty(p.getMerchantId(), "EXAMPLE-MERCHANT-ID"),
+                        now,
+                        collaboratorEmail("customer"),
+                        collaboratorUrl("/payout-callback")
+                );
         String req = "POST " + path + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "Content-Type: application/json\r\n" +
