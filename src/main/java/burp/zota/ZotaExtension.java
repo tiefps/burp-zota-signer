@@ -41,7 +41,13 @@ public class ZotaExtension implements BurpExtension, HttpHandler {
         Http http = api.http();
         http.registerHttpHandler(this);
 
-        ZotaLogger.info("Zota Signer initialized.");
+        String version = ZotaExtension.class.getPackage() != null
+                ? ZotaExtension.class.getPackage().getImplementationVersion()
+                : null;
+        if (version == null || version.isBlank()) {
+            version = "dev";
+        }
+        ZotaLogger.info("Zota Signer v" + version + " initialized.");
     }
 
     @Override

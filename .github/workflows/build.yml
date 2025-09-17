@@ -25,6 +25,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Determine project version
+        id: project_version
+        run: |
+          VERSION=$(./gradlew -q properties --console=plain | grep '^version:' | awk '{print $2}')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Build shadow jar
         run: ./gradlew clean shadowJar
 
@@ -41,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zota-signer-jar
+          name: zota-signer-${{ steps.project_version.outputs.version }}
           path: build/libs/*.jar
 
   release:
