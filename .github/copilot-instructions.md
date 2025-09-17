@@ -22,7 +22,7 @@ Burp Zota Signer is a Java 21 Burp Suite extension that automatically signs Zota
 #### Build Outputs
 - Built JAR: `build/libs/burp-zota-signer-0.1.1.jar` (shadow JAR, ~2.3MB)
 - This JAR excludes the Montoya API (provided by Burp at runtime)
-- Ready to load into Burp Suite via **Extender → Extensions → Add**
+- Ready to load into Burp Suite via **Extensions → Add**
 
 ### Validation
 **MANUAL VALIDATION REQUIREMENT**: Since this is a Burp Suite extension, you cannot fully exercise the application outside Burp Suite. However, you should validate:
