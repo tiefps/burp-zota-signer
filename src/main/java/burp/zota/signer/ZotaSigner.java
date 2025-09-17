@@ -222,6 +222,13 @@ public class ZotaSigner {
 
         String merchantId = params.getOrDefault("merchantID", "");
         String requestID = params.getOrDefault("requestID", "");
+        if (requestID == null || requestID.isEmpty()) {
+            String camel = params.getOrDefault("requestId", "");
+            if (camel != null && !camel.isEmpty()) {
+                requestID = camel;
+                params.put("requestID", camel);
+            }
+        }
         String timestamp = params.getOrDefault("timestamp", "");
 
         String sigSource = valueOrEmpty(merchantId)
@@ -503,12 +510,11 @@ public class ZotaSigner {
         String orderID = params.getOrDefault("orderID", "");
 
         String sigSource = valueOrEmpty(p.getMerchantId())
+                + valueOrEmpty(p.getMerchantSecretKey())
                 + valueOrEmpty(requestID)
                 + valueOrEmpty(date)
                 + valueOrEmpty(timestamp)
-                + valueOrEmpty(orderType)
-                + valueOrEmpty(orderID)
-                + valueOrEmpty(p.getMerchantSecretKey());
+                + valueOrEmpty(orderID);
 
         String signature = SignatureUtil.sha256HexLower(sigSource);
         params.put("signature", signature);
